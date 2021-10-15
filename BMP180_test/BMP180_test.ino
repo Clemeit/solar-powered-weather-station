@@ -38,6 +38,7 @@ void readBarometricPressure() {
 
 //    lastKnownPressure = bmp.getPressure();
     Serial.print("Pressure: ");
-    Serial.println(bmp.getPressure());
+    Serial.print(bmp.getPressure());
+    Serial.println(" Pa");
   }
 }
