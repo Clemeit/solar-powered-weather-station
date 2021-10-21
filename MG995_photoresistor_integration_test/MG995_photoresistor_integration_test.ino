@@ -3,11 +3,10 @@
 const int PHOTO_1 = 0;
 const int PHOTO_2 = 1;
 const int SERVO = 3;
-const int SPIN_MOD = 2;
+const int SPIN_MOD = 1;
 
 int suggestedSpin = 0;
 int pulse = 128;
-int spin = 1;
 const int MIN_PULSE = 50;
 const int MAX_PULSE = 255;
 
@@ -22,17 +21,21 @@ void setup() {
   pinMode(A1, INPUT);
   Serial.begin(9600);
 
-  Timer1.initialize(10000);
-  Timer1.attachInterrupt(handleServo);
+  //Timer1.initialize(10000);
+  //Timer1.attachInterrupt(handleServo);
 }
 
 void loop() {
-  
+  handleServo();
+  delay(5000);
 }
 
 void handleServo() {
-  setSuggestedSpin();
-  setPulse();
+  do {
+    setSuggestedSpin();
+    setPulse();
+    delay(10);
+  } while (suggestedSpin != 0);  
 }
 
 void setSuggestedSpin() {
