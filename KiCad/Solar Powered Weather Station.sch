@@ -1627,23 +1627,10 @@ Wire Wire Line
 Connection ~ 9250 5450
 Wire Wire Line
 	9250 5450 9300 5450
-$Comp
-L Connector_Generic:Conn_01x02 J17
-U 1 1 619634A2
-P 1900 2200
-F 0 "J17" H 1900 2300 50  0000 C CNN
-F 1 "Batt_Conn" H 1900 2400 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 1900 2200 50  0001 C CNN
-F 3 "~" H 1900 2200 50  0001 C CNN
-	1    1900 2200
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	1700 2200 1600 2200
-Wire Wire Line
-	1600 2200 1600 1100
-Wire Wire Line
-	1200 2300 1700 2300
+	1200 2300 1600 2300
 Text Notes 6000 5000 0    50   ~ 0
 WiFi Program Control
+Wire Wire Line
+	1600 1100 1600 2300
 $EndSCHEMATC
