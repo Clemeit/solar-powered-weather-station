@@ -57,9 +57,9 @@ void setup() {
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
   
-  Timer1.initialize(3000000);
+  Timer1.initialize(10000000);
   Timer1.attachInterrupt(readWeather);
 }
 
@@ -68,20 +68,18 @@ void loop() {
 }
 
 void readWeather() {
-  Serial.println("Reading weather data...");
-  readHumidity();
+//  Serial.println("Reading weather data...");
   readTemperature();
+  readHumidity();
   readBarometricPressure();
   handleServo();
-  Serial.println();
+//  Serial.println();
 }
 
 void readHumidity() {
   lastKnownHumidity = dht.readHumidity();
 
-  Serial.print("Humidity: ");
-  Serial.print(lastKnownHumidity);
-  Serial.println("%");
+  Serial.println(lastKnownHumidity);
 }
 
 void readTemperature() {
@@ -89,19 +87,14 @@ void readTemperature() {
 
   lastKnownTemperature = ds18b20.getTempCByIndex(0) * 1.8 + 32;
 
-  Serial.print("Temperature: ");
-  Serial.print(lastKnownTemperature);
-  Serial.println(" Fahrenheit");
+  Serial.println(lastKnownTemperature);
 }
 
 void readBarometricPressure() {
   if (bmp.measurePressure()) {
     do { } while (!bmp.hasValue());
 
-//    lastKnownPressure = bmp.getPressure();
-    Serial.print("Pressure: ");
-    Serial.print(bmp.getPressure());
-    Serial.println(" Pa");
+    Serial.println(bmp.getPressure());
   }
 }
 
@@ -142,7 +135,7 @@ void setPulse() {
   if (pulse <= MIN_PULSE) pulse = MIN_PULSE;
   if (pulse >= MAX_PULSE) pulse = MAX_PULSE;
 
-  Serial.print("Servo PWM: ");
-  Serial.println(pulse);
+//  Serial.print("Servo PWM: ");
+//  Serial.println(pulse);
   analogWrite(SERVO, pulse);
 }
