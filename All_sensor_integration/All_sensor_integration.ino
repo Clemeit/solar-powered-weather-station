@@ -58,6 +58,8 @@ void setup() {
   pinMode(A1, INPUT);
 
   Serial.begin(115200);
+
+  delay(5000); // wait 5 seconds for WiFi module to start
   
   Timer1.initialize(10000000);
   Timer1.attachInterrupt(readWeather);
@@ -99,8 +101,11 @@ void readBarometricPressure() {
 }
 
 void handleServo() {
-  setSuggestedSpin();
-  setPulse();
+  do {
+    setSuggestedSpin();
+    setPulse();
+    delay(10);
+  } while (suggestedSpin != 0);
 }
 
 void setSuggestedSpin() {
