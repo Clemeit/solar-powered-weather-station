@@ -2,27 +2,20 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-#ifndef APSSID
-#define APSSID "ESPap"
-#define APPSK  "thereisnospoon"
-#endif
-
-const char *ssid = APSSID;
-const char *password = APPSK;
+const char *ssid = "ESP-Weather-Station";
 
 ESP8266WebServer server(80);
 
 const byte numChars = 32;
-char receivedChars[numChars] = "123";   // an array to store the received data
+char receivedChars[numChars] = "0";   // an array to store the received data
 char displayData[numChars];
 
-char temperature[10] = "0";
-char humidity[10] = "0";
-char pressure[20] = "0";
+char temperature[12] = "Loading...";
+char humidity[12] = "Loading...";
+char pressure[20] = "Loading...";
 
 boolean newData = false;
 int currentlyReading = 0; // 0=temp, 1=hum, 2=press
-
 
 void setup() {
   delay(1000);
@@ -44,14 +37,16 @@ void loop() {
   if (newData == true) {
     //strncpy(displayData, newData, 32);
     switch (currentlyReading) {
-      case 0: // temp
+      case 0: // temperature
         strcpy(temperature, receivedChars);
         break;
-      case 1: // hum
+      case 1: // humidity
         strcpy(humidity, receivedChars);
         break;
-      case 2: // press
-        strcpy(pressure, receivedChars);
+      case 2: // pressure
+        float p = atof(receivedChars);
+        p /= 1000; // kPa
+        sprintf(pressure, "%.2f", p);
         break;
     }
     currentlyReading++;
@@ -99,15 +94,15 @@ void handleRoot() {
   ptr +="body{margin: 0px;} ";
   ptr +="h1 {margin: 50px auto 30px;} ";
   ptr +=".side-by-side{display: table-cell;vertical-align: middle;position: relative;}";
-  ptr +=".text{font-weight: 00;font-size: 19px;width: 200px;}";
-  ptr +=".reading{font-weight: 300;font-size: 30px;padding-right: 15px;}";
+  ptr +=".text{font-size: 19px;width: 130px;text-align: left;padding-left: 20px;}";
+  ptr +=".reading{font-weight: 300;font-size: 30px;padding-right: 15px;text-align: right;line-height: 30px;}";
   ptr +=".temperature .reading{color: #F29C1F;}";
   ptr +=".humidity .reading{color: #3B97D3;}";
   ptr +=".pressure .reading{color: #26B99A;}";
   ptr +=".superscript{font-size: 17px;font-weight: 600;position: relative;bottom: 10px;}";
-  ptr +=".data{padding: 10px;}";
+  ptr +=".data{padding: 10px 0px;}";
   ptr +=".container{display: table;margin: 0 auto;}";
-  ptr +=".icon{width:65px}";
+  ptr +=".icon{padding-left: 10px;width:40px;min-width: 40px;}";
   ptr +="</style>";
   ptr +="</head>";
   ptr +="<body>";
@@ -153,7 +148,7 @@ void handleRoot() {
   ptr +="<div class='side-by-side text'>Pressure</div>";
   ptr +="<div class='side-by-side reading'>";
   ptr +=(String)pressure;
-  ptr +="<span class='superscript'>hPa</span></div>";
+  ptr +="<span class='superscript'>kPa</span></div>";
   ptr +="</div>";
   ptr +="</div>";
   ptr +="</body>";
