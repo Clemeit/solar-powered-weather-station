@@ -31,7 +31,7 @@ BMP180I2C bmp(I2C_ADDRESS);
 const int PHOTO_1 = 0;
 const int PHOTO_2 = 1;
 const int SERVO = 3;
-const int SPIN_MOD = 10;
+const int SPIN_MOD = 1;
 
 int suggestedSpin = 0;
 int pulse = 128;
@@ -66,16 +66,13 @@ void setup() {
 }
 
 void loop() {
-  
+  handleServo();
 }
 
 void readWeather() {
-//  Serial.println("Reading weather data...");
   readTemperature();
   readHumidity();
   readBarometricPressure();
-  handleServo();
-//  Serial.println();
 }
 
 void readHumidity() {
@@ -104,7 +101,7 @@ void handleServo() {
   do {
     setSuggestedSpin();
     setPulse();
-    delay(10);
+    delay(25);
   } while (suggestedSpin != 0);
 }
 
@@ -140,7 +137,5 @@ void setPulse() {
   if (pulse <= MIN_PULSE) pulse = MIN_PULSE;
   if (pulse >= MAX_PULSE) pulse = MAX_PULSE;
 
-//  Serial.print("Servo PWM: ");
-//  Serial.println(pulse);
   analogWrite(SERVO, pulse);
 }
